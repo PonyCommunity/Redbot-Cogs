@@ -7,7 +7,7 @@ import discord
 import lavalink
 import yaml
 from redbot.cogs.audio import Audio
-#from redbot.cogs.trivia.trivia import InvalidListError, Trivia, get_core_lists
+from redbot.cogs.trivia.trivia import InvalidListError, Trivia, get_core_lists
 from redbot.core import Config, checks, commands
 from redbot.core.bot import Red
 from redbot.core.data_manager import cog_data_path
@@ -216,7 +216,7 @@ class AudioTrivia(Trivia):
         personal_lists = [p.resolve() for p in cog_data_path(self).glob("*.yaml")]
 
         # Add to that custom lists uploaded with trivia and core lists
-        return personal_lists + get_core_audio_lists() + self._all_lists()
+        return personal_lists + self._all_lists()
 
 
 def get_core_audio_lists() -> List[pathlib.Path]:
