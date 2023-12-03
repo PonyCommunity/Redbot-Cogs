@@ -7,7 +7,7 @@ import discord
 import lavalink
 import yaml
 from redbot.cogs.audio import Audio
-from redbot.cogs.trivia.trivia import InvalidListError, Trivia
+#from redbot.cogs.trivia.trivia import InvalidListError, Trivia, get_core_lists
 from redbot.core import Config, checks, commands
 from redbot.core.bot import Red
 from redbot.core.data_manager import cog_data_path
