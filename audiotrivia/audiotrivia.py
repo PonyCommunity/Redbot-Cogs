@@ -216,7 +216,7 @@ class AudioTrivia(Trivia):
         personal_lists = [p.resolve() for p in cog_data_path(self).glob("*.yaml")]
 
         # Add to that custom lists uploaded with trivia and core lists
-        return personal_lists + self._all_lists()
+        return personal_lists + get_core_audio_lists() + self._all_lists()
 
 
 def get_core_audio_lists() -> List[pathlib.Path]:
