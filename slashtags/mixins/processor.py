@@ -286,7 +286,7 @@ class Processor(MixinMeta):
             return
 
         try:
-            destination.send(content, embed=embed, **kwargs)
+            return await destination.send(content)
         except discord.HTTPException as exc:
             log.exception(
                 "Error sending to destination:%r for interaction:%r\nkwargs:%r",
