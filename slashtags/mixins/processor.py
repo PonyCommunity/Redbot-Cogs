@@ -268,9 +268,33 @@ class Processor(MixinMeta):
     ) -> Optional[discord.Message]:
         destination = interaction
 
-        
-        await destination.send(content, embed=embed, **kwargs)
-        
+        if target := actions.get("target"):
+            if target == "dm":
+                destination = interaction.author
+                del kwargs["ephemeral"]
+            elif target != "reply":
+                try:
+                    chan = await self.channel_converter.convert(interaction, target)
+                except commands.BadArgument:
+                    pass
+                else:
+                    if chan.permissions_for(interaction.me).send_messages:
+                        destination = chan
+                        del kwargs["ephemeral"]
+
+        if not (content or embed is not None):
+            return
+
+        try:
+            return await destination.send(content, embed=embed, **kwargs)
+        except discord.HTTPException as exc:
+            log.exception(
+                "Error sending to destination:%r for interaction:%r\nkwargs:%r",
+                destination,
+                interaction,
+                kwargs,
+                exc_info=exc,
+            )
 
     async def validate_checks(self, ctx: commands.Context, actions: dict):
         to_gather = []
