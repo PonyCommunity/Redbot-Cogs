@@ -287,14 +287,7 @@ class Processor(MixinMeta):
 
         try:
             return await destination.send(content, embed=embed, **kwargs)
-        except discord.HTTPException as exc:
-            log.exception(
-                "Error sending to destination:%r for interaction:%r\nkwargs:%r",
-                destination,
-                interaction,
-                kwargs,
-                exc_info=exc,
-            )
+        
 
     async def validate_checks(self, ctx: commands.Context, actions: dict):
         to_gather = []
