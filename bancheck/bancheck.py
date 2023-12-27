@@ -641,7 +641,7 @@ class BanCheck(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @checks.admin_or_permissions(ban_members=True)
+    #@checks.admin_or_permissions(ban_members=True)
     async def bancheck(
         self,
         ctx: commands.Context,
