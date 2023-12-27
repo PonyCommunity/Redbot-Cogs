@@ -269,7 +269,7 @@ class Processor(MixinMeta):
         destination = interaction
 
         
-        return await destination.send(content, embed=embed, **kwargs)
+        await destination.send(content, embed=embed, **kwargs)
         
 
     async def validate_checks(self, ctx: commands.Context, actions: dict):
