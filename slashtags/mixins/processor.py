@@ -285,8 +285,8 @@ class Processor(MixinMeta):
         if not (content or embed is not None):
             return
 
-        try:
-            return await destination.send(content, embed=embed, **kwargs)
+        
+        return await destination.send(content, embed=embed, **kwargs)
         
 
     async def validate_checks(self, ctx: commands.Context, actions: dict):
