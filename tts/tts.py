@@ -67,7 +67,7 @@ class TextToSpeech(Cog):
 
         tts.tts_with_vc_to_file(
             "Wie sage ich auf Italienisch, dass ich dich liebe?",
-             speaker_wav="./tts.mp3",
+             speaker_wav="tts.mp3",
              file_path=audio_path
         )
 
