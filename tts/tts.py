@@ -2,6 +2,11 @@ import os
 import shutil
 import logging
 import lavalink
+import torch
+from TTS.api import TTS
+
+
+
 from gtts import gTTS
 from googletrans import Translator
 from discord.ext import tasks
@@ -12,6 +17,8 @@ from redbot.cogs.audio import Audio
 from typing import Optional
 
 log = logging.getLogger("red.crab-cogs.tts")
+
+# Get device
 
 
 class TextToSpeech(Cog):
@@ -42,6 +49,8 @@ class TextToSpeech(Cog):
     @commands.guild_only()
     async def tts(self, ctx: commands.Context, *, text: str):
         """Speak in voice chat. Overrides music. Detects the language."""
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+
 
         audio: Optional[Audio] = self.bot.get_cog("Audio")
         if audio is None:
@@ -50,22 +59,17 @@ class TextToSpeech(Cog):
             if await ctx.invoke(audio.command_summon):
                 return  # failed to join voicechat
 
-        try:
-            lang = self.translator.detect(text).lang
-            tts = gTTS(text, lang=lang)
-        except Exception as error:
-            if not isinstance(error, ValueError):
-                log.error("Trying to detect language", exc_info=error)
-            tts = gTTS(text)
+        tts = TTS("tts_models/de/thorsten/tacotron2-DDC")
+        
 
         self.tts_storage.mkdir(parents=True, exist_ok=True)
         audio_path = str(self.tts_storage.joinpath(f"{ctx.message.id}.mp3"))
 
-        try:
-            tts.save(audio_path)
-        except Exception as error:
-            log.error("Trying to save TTS audio", exc_info=error)
-            return ctx.send("There was an error saving the voice message. Check the logs for more details.")
+        tts.tts_with_vc_to_file(
+            "Wie sage ich auf Italienisch, dass ich dich liebe?",
+             speaker_wav="./tts.mp3",
+             file_path=audio_path
+        )
 
         player = lavalink.get_player(ctx.guild.id)
         player.store("channel", ctx.channel.id)
